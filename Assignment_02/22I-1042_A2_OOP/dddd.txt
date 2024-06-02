@@ -1,0 +1,3 @@
+mm			ssss			22	3
+rr			rrrrrr			32	2
+gg			33			22	2

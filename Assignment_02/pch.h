@@ -1,0 +1,6 @@
+#include"ZooChain.h"
+#include"ZooChain.cpp"
+#include"String.h"
+#include"String.cpp"
+#include"BinaryStore.h"
+#include"BinaryStore.cpp"

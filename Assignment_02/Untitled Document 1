@@ -1,0 +1,163 @@
+Fix this code to pass the gtest given at the end. DO NOT make additional functions or use build in library functions.
+please help me resolve the errors
+
+
+#include <gtest/gtest.h>
+class BinaryStore
+{
+    // add suitable member attributes
+private:
+    char** addres;
+    char** byte;
+    int address_count;
+    int byte_count;
+
+public:
+    // constructor which creates the store of length len.
+BinaryStore(int len=0)
+{
+    addres = new char* [len];
+    byte = new char* [len];
+    for (int i = 0; i < len; i++)
+    {
+        addres[i] = new char[4];
+        byte[i] = new char[8];
+    }
+    address_count = 0;
+    byte_count = 0;
+};
+    void add_Address(char* s) // add a new address in the list of Binary store.
+        //add_Address(char*s)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            addres[address_count][i] = *(s + i);
+        }
+        address_count++;
+    }
+    void set_Byte(char* address, char* value) // add the byte at newly added address
+        // here the first parameter is address and second is byte// Similarly the
+        //following code adds byte address and later byte // if address not found add
+        //address and byte both // function also overrides the data given at particular byte
+        //address.
+        //BinaryStore::set_Byte(char* address, char* value) // add the byte at newly added address
+        // here the first parameter is address and second is byte// Similarly the
+    {
+        int index;
+        bool flag = false;
+        for (int i = 0; i < address_count; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if (addres[i][j] == address[j])
+                {
+                    flag = true;
+                    continue;
+                }
+                else
+                {
+                    flag = false;
+                    break;
+                }
+                /* code */
+            }
+            if (flag == true)
+            {
+                index = i;
+                break;
+            }
+
+        }
+        for (int i = 0; i < 8; i++)
+        {
+            byte[index][i] = *(value + i);
+        }
+        byte_count++;
+    }
+    char* Get(char* address) //Get function will retrieve the byte at a givenaddress ,
+        //BinaryStore::Get(char* address)//Get function will retrieve the byte at a givenaddress ,
+    {
+        char* s = new char[8];
+        int index;
+        bool flag = false;
+	
+        for (int i = 0; i < address_count; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                if (addres[i][j] == *(address + j))
+                {
+                    flag = true;
+                    continue;
+                }
+                else
+                {
+                    flag = false;
+                    break;
+                }
+                /* code */
+            }
+            if (flag == true)
+            {
+                index = i;
+                break;
+            }
+        }
+        if (flag == true)
+        {
+        
+            for (int i = 0; i < 8; i++)
+            {
+                s[i] = byte[index][i];
+
+            }
+            s[8] = '\0';
+            return s;
+        }
+        else {
+            delete[] s;
+            s=nullptr;
+            
+            
+        }
+
+        return s;
+    }
+}                                                                                                                  TEST(BinaryStore, start) {
+
+	BinaryStore x(3);
+	
+	x.add_Address("0000");
+	x.add_Address("0001");
+	x.add_Address("0010");
+
+	x.set_Byte("0000", "01010101");
+	x.set_Byte("0010", "01010100");
+
+	EXPECT_EQ(strcmp(x.Get("0000"), "01010101"), 0);
+	
+	EXPECT_EQ(strcmp(x.Get("0010"), "01010100"), 0);
+	
+	
+	EXPECT_EQ(x.Get("0001"), nullptr);
+
+}
+
+TEST(BinaryStore, start1) {
+	BinaryStore x(2);
+	x.add_Address("0000");
+	x.add_Address("0001");
+
+	x.set_Byte("0000", "01010101");
+	x.set_Byte("0010", "01010100");
+
+	EXPECT_EQ(strcmp(x.Get("0000"), "01010101"), 0);
+	EXPECT_EQ(strcmp(x.Get("0010"), "01010100"), 0);
+
+	x.set_Byte("0000", "01111110");
+	EXPECT_EQ(strcmp(x.Get("0000"), "01111110"), 0);
+}                                                                                                              int main(int argc, char** argv) 
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
